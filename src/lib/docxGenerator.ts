@@ -93,10 +93,14 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
   const addBullet = (text: string) => {
     sections.push(
       new Paragraph({
-        text: text,
         bullet: { level: 0 },
-        size: 22,
-        font: "Times New Roman",
+        children: [
+          new TextRun({
+            text: text,
+            size: 22,
+            font: "Times New Roman",
+          }),
+        ],
       })
     );
   };
@@ -163,19 +167,21 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
   if (data.publications.length > 0) {
     addSectionHeader("Publications");
     data.publications.forEach((pub) => {
-      const children = [
+      const children: any[] = [
         new TextRun({ text: `${pub.authors}. (${pub.date}). `, size: 22, font: "Times New Roman" }),
       ];
 
       if (pub.link) {
         children.push(
           new ExternalHyperlink({
-            child: new TextRun({
-              text: `"${pub.title}"`,
-              style: "Hyperlink",
-              size: 22,
-              font: "Times New Roman",
-            }),
+            children: [
+              new TextRun({
+                text: `"${pub.title}"`,
+                style: "Hyperlink",
+                size: 22,
+                font: "Times New Roman",
+              }),
+            ],
             link: pub.link,
           })
         );
