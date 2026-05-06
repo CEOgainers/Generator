@@ -1,0 +1,299 @@
+.resumePage {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.6in 0.8in;
+  background-color: white;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* important for absolute positioning of borders */
+}
+
+@media print {
+  @page {
+    /* Set margin to 0 to completely disable browser default Date/Title text */
+    margin: 0;
+  }
+  .resumePage {
+    box-shadow: none;
+    margin: 0;
+    /* We only apply left/right padding. Top/bottom is handled by the table headers */
+    padding: 0 0.8in; 
+  }
+}
+
+/* Table structure for printing margins */
+.printTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.printSpaceTop, .printSpaceBottom {
+  height: 0;
+}
+
+@media print {
+  .printSpaceTop, .printSpaceBottom {
+    height: 0.6in; /* This creates the repeating top/bottom margin on every page */
+  }
+}
+
+/* Header and Footer Decorations */
+.pageDecorationTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background-color: #8caad4;
+}
+.pageDecorationTop::before, .pageDecorationTop::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  width: 20px;
+  height: 60px;
+  background-color: #8caad4;
+}
+.pageDecorationTop::before { left: 0; }
+.pageDecorationTop::after { right: 0; }
+
+.pageDecorationBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background-color: #8caad4;
+}
+.pageDecorationBottom::before, .pageDecorationBottom::after {
+  content: '';
+  position: absolute;
+  bottom: 25px;
+  width: 20px;
+  height: 60px;
+  background-color: #8caad4;
+}
+.pageDecorationBottom::before { left: 0; }
+.pageDecorationBottom::after { right: 0; }
+
+@media print {
+  .pageDecorationTop {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    right: 0;
+    z-index: 1000;
+  }
+  .pageDecorationTop::before, .pageDecorationTop::after {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+  .pageDecorationTop::before { left: 0; }
+  .pageDecorationTop::after { right: 0; }
+
+  .pageDecorationBottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .pageDecorationBottom::before, .pageDecorationBottom::after {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+  }
+  .pageDecorationBottom::before { left: 0; }
+  .pageDecorationBottom::after { right: 0; }
+}
+
+.headerSection {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  position: relative;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.profilePicContainer {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 24px;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+}
+
+.profilePicContainer:hover::after {
+  content: "Upload Picture";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  padding: 6px 0;
+}
+
+.profilePic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholderPic {
+  color: #888;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+}
+
+.headerRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-right: 16px;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0e4e96; /* Europass Blue */
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.icon {
+  color: #0e4e96;
+  margin-right: 8px;
+}
+
+.contactRow a {
+  color: #0e4e96;
+  text-decoration: underline;
+}
+
+.europassLogo {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  margin-left: 16px;
+  margin-top: 4px;
+}
+
+.europassLogo img {
+  height: 38px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0e4e96;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+  border-bottom: 1px solid #0e4e96;
+  padding-bottom: 4px;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.aboutMe {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  text-align: justify;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.item {
+  margin-bottom: 14px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.itemTitle {
+  font-size: 14px;
+  color: #0e4e96;
+  margin-bottom: 4px;
+}
+
+.itemSubheader {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.itemSubheader span {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.itemDate {
+  font-style: normal;
+  color: #444;
+}
+
+.infoRow {
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 24px;
+  font-size: 12px;
+  list-style-type: none; /* We will use custom bullet */
+}
+
+.bullet {
+  margin-bottom: 4px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.bullet::before {
+  content: "◦";
+  position: absolute;
+  left: -12px;
+  color: #333;
+}
+
+.publicationLink {
+  color: #0e4e96;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+.bold {
+  font-weight: bold;
+}

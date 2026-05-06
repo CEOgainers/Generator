@@ -1,0 +1,124 @@
+.resumePage {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.5in 0.75in;
+  background-color: white;
+  color: black;
+  font-family: 'Times New Roman', Times, serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media print {
+  .resumePage {
+    box-shadow: none;
+    margin: 0;
+    padding: 0.5in 0.75in;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.contactInfo {
+  font-size: 14px;
+  margin: 0 0 16px 0;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.contactInfo a {
+  color: #0000ee; /* Blue links as per screenshot */
+  text-decoration: underline;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-top: 1.5px solid #ccc;
+  border-bottom: 1.5px solid #ccc;
+  padding: 6px 0;
+  margin: 0 0 12px 0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.item {
+  margin-bottom: 16px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.itemTitle {
+  font-weight: bold;
+}
+
+.itemDate {
+  font-weight: bold;
+}
+
+.itemSubheader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 24px;
+  font-size: 15px;
+}
+
+.bullet {
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.paragraph {
+  font-size: 15px;
+  margin: 0 0 6px 0;
+  text-align: justify;
+  line-height: 1.5;
+}
+
+.publicationLink {
+  color: #0000ee;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.additionalText {
+  font-size: 15px;
+  margin: 4px 0;
+}
+
+.bold {
+  font-weight: bold;
+}

@@ -1,65 +1,160 @@
-import Image from "next/image";
+"use client";
+
+import React, { useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
+import DataEntryForm from "../components/DataEntryForm";
+import ResumeTemplate from "../components/ResumeTemplate";
+import ModernTemplate from "../components/ModernTemplate";
+import EuropassTemplate from "../components/EuropassTemplate";
+import { useResume } from "./context/ResumeContext";
+import { generateWordDoc } from "../lib/docxGenerator";
+import styles from "./page.module.css";
+import { Download, Printer, Upload, Save, LayoutTemplate } from "lucide-react";
+import { saveAs } from "file-saver";
 
 export default function Home() {
+  const { data, loadData } = useResume();
+  const componentRef = useRef<HTMLDivElement>(null);
+  const [template, setTemplate] = useState<"ivy" | "modern" | "europass">("modern");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
+  const [pastedJSON, setPastedJSON] = useState("");
+
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: data?.personalInfo ? `${data.personalInfo.firstName || "My"}_${data.personalInfo.lastName || "Resume"}` : "Resume",
+  });
+
+  const handleWordExport = async () => {
+    try {
+      await generateWordDoc(data, template);
+    } catch (error) {
+      console.error("Error generating Word document:", error);
+      alert("Failed to generate Word document. Please check console for errors.");
+    }
+  };
+
+  const handleExportJSON = () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    saveAs(blob, "resume_data.json");
+  };
+
+  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        loadData(json);
+        alert("Resume data loaded successfully!");
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+        alert("Invalid JSON file.");
+      }
+    };
+    reader.readAsText(file);
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handlePasteJSONSubmit = () => {
+    try {
+      const json = JSON.parse(pastedJSON);
+      loadData(json);
+      alert("Resume data loaded successfully!");
+      setIsPasteModalOpen(false);
+      setPastedJSON("");
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      alert("Invalid JSON format. Please check your text.");
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <main className={styles.container}>
+      {/* Paste JSON Modal */}
+      {isPasteModalOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', 
+          justifyContent: 'center', alignItems: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'var(--bg-secondary)', padding: '24px', 
+            borderRadius: '8px', width: '600px', display: 'flex', 
+            flexDirection: 'column', gap: '16px', border: '1px solid var(--border-color)'
+          }}>
+            <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Paste JSON Data</h2>
+            <textarea 
+              style={{ width: '100%', height: '300px', padding: '12px', borderRadius: '6px', backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontFamily: 'monospace' }}
+              value={pastedJSON}
+              onChange={(e) => setPastedJSON(e.target.value)}
+              placeholder="Paste your JSON here..."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+              <button className={styles.secondaryBtn} onClick={() => setIsPasteModalOpen(false)}>Cancel</button>
+              <button className={styles.primaryBtn} onClick={handlePasteJSONSubmit}>Load Data</button>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      )}
+
+      {/* Left Panel: Data Entry */}
+      <section className={styles.leftPanel}>
+        <DataEntryForm />
+      </section>
+
+      {/* Right Panel: Live Preview & Actions */}
+      <section className={styles.rightPanel}>
+        <div className={styles.actionPanel}>
+          <div style={{ display: 'flex', gap: '8px', marginRight: 'auto' }}>
+            <button className={styles.secondaryBtn} onClick={() => fileInputRef.current?.click()}>
+              <Upload size={18} /> Import JSON File
+            </button>
+            <button className={styles.secondaryBtn} onClick={() => setIsPasteModalOpen(true)}>
+              📋 Paste JSON
+            </button>
+            <input 
+              type="file" 
+              accept=".json" 
+              ref={fileInputRef} 
+              style={{ display: 'none' }} 
+              onChange={handleImportJSON} 
+            />
+            <button className={styles.secondaryBtn} onClick={handleExportJSON}>
+              <Save size={18} /> Save JSON
+            </button>
+            <select 
+              className={styles.secondaryBtn} 
+              value={template} 
+              onChange={(e) => setTemplate(e.target.value as "ivy" | "modern" | "europass")}
+              style={{ padding: '8px', cursor: 'pointer' }}
+            >
+              <option value="modern">Modern Academic</option>
+              <option value="ivy">Ivy League</option>
+              <option value="europass">Europass Style</option>
+            </select>
+          </div>
+          
+          <button className={styles.secondaryBtn} onClick={() => handlePrint()}>
+            <Printer size={18} />
+            PDF
+          </button>
+          <button className={styles.primaryBtn} onClick={handleWordExport}>
+            <Download size={18} />
+            .docx
+          </button>
+        </div>
+        <div className={styles.resumeContainer}>
+          {template === "ivy" && <ResumeTemplate ref={componentRef} />}
+          {template === "modern" && <ModernTemplate ref={componentRef} />}
+          {template === "europass" && <EuropassTemplate ref={componentRef} />}
+        </div>
+      </section>
+    </main>
   );
 }
