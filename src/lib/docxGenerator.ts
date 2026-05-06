@@ -11,7 +11,7 @@ import {
 import { saveAs } from "file-saver";
 import { ResumeData } from "../app/context/ResumeContext";
 
-export const generateWordDoc = async (data: ResumeData, template: "ivy" | "modern" = "ivy") => {
+export const generateWordDoc = async (data: ResumeData, template: "ivy" | "modern" | "europass" = "ivy") => {
   const sections = [];
 
   // Header
