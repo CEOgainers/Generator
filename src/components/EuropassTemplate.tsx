@@ -87,7 +87,28 @@ const EuropassTemplate = forwardRef<HTMLDivElement>((props, ref) => {
           {personalInfo.linkedin && (
             <div className={styles.contactRow}>
               <Link size={14} className={styles.icon} /> 
-              <span className={styles.bold}>LinkedIn:</span>&nbsp;<a href={personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`} target="_blank" rel="noreferrer">{personalInfo.linkedin}</a>
+              <span className={styles.bold}>LinkedIn:</span>&nbsp;
+              <a 
+                href={personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`} 
+                target="_blank" 
+                rel="noreferrer"
+              >
+                {personalInfo.linkedin}
+              </a>
+            </div>
+          )}
+          
+          {personalInfo.portfolio && (
+            <div className={styles.contactRow}>
+              <Link size={14} className={styles.icon} /> 
+              <span className={styles.bold}>Portfolio:</span>&nbsp;
+              <a 
+                href={personalInfo.portfolio.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`} 
+                target="_blank" 
+                rel="noreferrer"
+              >
+                {personalInfo.portfolio}
+              </a>
             </div>
           )}
           
