@@ -50,10 +50,6 @@ export default function DataEntryForm() {
               <input className={styles.inputField} value={data.personalInfo.location} onChange={(e) => updateData("personalInfo", { ...data.personalInfo, location: e.target.value })} />
             </div>
             <div className={styles.formGroup}>
-              <label>LinkedIn/Website</label>
-              <input className={styles.inputField} value={data.personalInfo.linkedin} onChange={(e) => updateData("personalInfo", { ...data.personalInfo, linkedin: e.target.value })} />
-            </div>
-            <div className={styles.formGroup}>
               <label>Nationality (Europass only)</label>
               <input className={styles.inputField} value={data.personalInfo.nationality || ""} onChange={(e) => updateData("personalInfo", { ...data.personalInfo, nationality: e.target.value })} />
             </div>
@@ -169,6 +165,36 @@ export default function DataEntryForm() {
             <div className={styles.formGroup}>
               <label>Awards</label>
               <input className={styles.inputField} value={data.additional.awards} onChange={(e) => updateData("additional", { ...data.additional, awards: e.target.value })} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Online Profiles & Links */}
+      <div className={styles.section}>
+        <SectionHeader title="🔗 Online Profiles & Links" sectionName="onlineProfiles" />
+        {openSection === "onlineProfiles" && (
+          <div className={styles.sectionContent}>
+            <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+              These links will only appear on the CV if filled in. When provided, they will be automatically hyperlinked.
+            </p>
+            <div className={styles.formGroup}>
+              <label>LinkedIn URL</label>
+              <input
+                className={styles.inputField}
+                placeholder="e.g. linkedin.com/in/yourname"
+                value={data.personalInfo.linkedin}
+                onChange={(e) => updateData("personalInfo", { ...data.personalInfo, linkedin: e.target.value })}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Portfolio / Personal Website URL</label>
+              <input
+                className={styles.inputField}
+                placeholder="e.g. github.com/yourname or yoursite.com"
+                value={data.personalInfo.portfolio || ""}
+                onChange={(e) => updateData("personalInfo", { ...data.personalInfo, portfolio: e.target.value })}
+              />
             </div>
           </div>
         )}

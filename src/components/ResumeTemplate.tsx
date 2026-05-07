@@ -14,10 +14,33 @@ const ResumeTemplate = forwardRef<HTMLDivElement>((props, ref) => {
       <div className={styles.header}>
         <h1 className={styles.name}>{personalInfo.firstName} {personalInfo.lastName}</h1>
         <p className={styles.contactInfo}>
-          {personalInfo.location} | {personalInfo.phone} | {personalInfo.email} |{" "}
-          <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noreferrer">
-            {personalInfo.linkedin}
-          </a>
+          {personalInfo.location}
+          {personalInfo.phone && ` | ${personalInfo.phone}`}
+          {personalInfo.email && ` | ${personalInfo.email}`}
+          {personalInfo.linkedin && (
+            <>
+              {" | "}
+              <a
+                href={personalInfo.linkedin.startsWith("http") ? personalInfo.linkedin : `https://${personalInfo.linkedin}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </a>
+            </>
+          )}
+          {personalInfo.portfolio && (
+            <>
+              {" | "}
+              <a
+                href={personalInfo.portfolio.startsWith("http") ? personalInfo.portfolio : `https://${personalInfo.portfolio}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Portfolio
+              </a>
+            </>
+          )}
         </p>
       </div>
 

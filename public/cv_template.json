@@ -1,0 +1,79 @@
+{
+  "personalInfo": {
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "phone": "",
+    "location": "City, Country",
+    "linkedin": "",
+    "portfolio": "",
+    "nationality": "",
+    "profilePicture": "",
+    "aboutMe": ""
+  },
+  "education": [
+    {
+      "id": "edu_1",
+      "institution": "",
+      "location": "",
+      "degree": "",
+      "date": "",
+      "gpa": "",
+      "coursework": ""
+    }
+  ],
+  "experience": [
+    {
+      "id": "exp_1",
+      "company": "",
+      "location": "",
+      "title": "",
+      "date": "",
+      "bullets": [
+        "",
+        ""
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_1",
+      "name": "",
+      "date": "",
+      "bullets": [
+        "",
+        ""
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "act_1",
+      "organization": "",
+      "location": "",
+      "role": "",
+      "date": "",
+      "bullets": [
+        "",
+        ""
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "id": "pub_1",
+      "title": "",
+      "authors": "",
+      "journal": "",
+      "date": "",
+      "link": ""
+    }
+  ],
+  "additional": {
+    "technicalSkills": "",
+    "programmingSkills": "",
+    "languages": "",
+    "certifications": "",
+    "awards": ""
+  }
+}

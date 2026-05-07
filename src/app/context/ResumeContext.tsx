@@ -62,6 +62,7 @@ export interface ResumeData {
     phone: string;
     location: string;
     linkedin: string;
+    portfolio: string;
     nationality?: string;
     profilePicture?: string;
     aboutMe?: string;
@@ -81,10 +82,11 @@ const initialData: ResumeData = {
     email: "first.last@ivy.edu",
     phone: "(123) 456-7891",
     location: "City, ST",
-    linkedin: "linkedin.com/in/username",
-    nationality: "Nigerian (Nigeria)",
-    profilePicture: "https://via.placeholder.com/150",
-    aboutMe: "Highly focused, energetic, and enthusiastic first class graduate..."
+    linkedin: "",
+    portfolio: "",
+    nationality: "",
+    profilePicture: "",
+    aboutMe: ""
   },
   education: [
     {
