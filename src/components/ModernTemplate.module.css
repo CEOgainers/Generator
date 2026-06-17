@@ -11,10 +11,28 @@
 }
 
 @media print {
+  @page {
+    margin: 0;
+  }
   .resumePage {
     box-shadow: none;
     margin: 0;
-    padding: 0.5in 0.75in;
+    padding: 0 0.75in;
+  }
+}
+
+.printTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.printSpaceTop, .printSpaceBottom {
+  height: 0;
+}
+
+@media print {
+  .printSpaceTop, .printSpaceBottom {
+    height: 0.6in;
   }
 }
 
@@ -42,7 +60,7 @@
 }
 
 .contactInfo a {
-  color: #0000ee; /* Blue links as per screenshot */
+  color: #0000ee;
   text-decoration: underline;
 }
 
@@ -99,6 +117,8 @@
 .bullet {
   margin-bottom: 4px;
   line-height: 1.4;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 .paragraph {

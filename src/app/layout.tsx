@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ResumeProvider } from "./context/ResumeContext";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Ivy League Resume Generator",
@@ -17,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
         <ResumeProvider>
           {children}
         </ResumeProvider>

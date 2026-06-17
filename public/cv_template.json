@@ -1,15 +1,31 @@
 {
+  "resumeStrategy": {
+    "targetCountries": [],
+    "targetPrograms": [],
+    "researchFocus": [],
+    "careerGoals": "",
+    "resumeType": "Academic Scholarship Resume",
+    "pageTarget": "1–1.5 pages",
+    "maximumPageLimit": "2 pages"
+  },
   "personalInfo": {
     "firstName": "",
     "lastName": "",
+    "fullName": "",
     "email": "",
     "phone": "",
-    "location": "City, Country",
+    "location": "",
     "linkedin": "",
     "portfolio": "",
+    "orcid": "",
+    "googleScholar": "",
+    "researchGate": "",
     "nationality": "",
     "profilePicture": "",
-    "aboutMe": ""
+    "aboutMe": "",
+    "personalId": "",
+    "dateOfBirth": "",
+    "placeOfBirth": ""
   },
   "education": [
     {
@@ -17,9 +33,26 @@
       "institution": "",
       "location": "",
       "degree": "",
+      "major": "",
       "date": "",
       "gpa": "",
+      "ranking": "",
+      "thesis": "",
+      "advisor": "",
       "coursework": ""
+    }
+  ],
+  "researchExperience": [
+    {
+      "id": "rex_1",
+      "institution": "",
+      "location": "",
+      "role": "",
+      "date": "",
+      "supervisor": "",
+      "bullets": [
+        ""
+      ]
     }
   ],
   "experience": [
@@ -30,20 +63,61 @@
       "title": "",
       "date": "",
       "bullets": [
-        "",
         ""
       ]
     }
   ],
-  "projects": [
+  "selectedPublications": [
+    {
+      "id": "pub_1",
+      "title": "",
+      "authors": "",
+      "journal": "",
+      "publisher": "",
+      "quartile": "",
+      "date": "",
+      "doi": "",
+      "link": "",
+      "status": ""
+    }
+  ],
+  "selectedProjects": [
     {
       "id": "proj_1",
       "name": "",
       "date": "",
+      "fundingOrGrant": "",
+      "supervisor": "",
       "bullets": [
-        "",
         ""
       ]
+    }
+  ],
+  "honorsAwardsScholarships": [
+    {
+      "id": "award_1",
+      "title": "",
+      "organization": "",
+      "date": "",
+      "description": ""
+    }
+  ],
+  "standardizedTests": [
+    {
+      "id": "test_1",
+      "testName": "",
+      "score": "",
+      "date": "",
+      "breakdown": ""
+    }
+  ],
+  "certificationsTraining": [
+    {
+      "id": "cert_1",
+      "title": "",
+      "organization": "",
+      "date": "",
+      "description": ""
     }
   ],
   "activities": [
@@ -54,26 +128,26 @@
       "role": "",
       "date": "",
       "bullets": [
-        "",
         ""
       ]
-    }
-  ],
-  "publications": [
-    {
-      "id": "pub_1",
-      "title": "",
-      "authors": "",
-      "journal": "",
-      "date": "",
-      "link": ""
     }
   ],
   "additional": {
     "technicalSkills": "",
     "programmingSkills": "",
+    "laboratorySkills": "",
     "languages": "",
+    "professionalMemberships": "",
+    "peerReviewActivities": "",
     "certifications": "",
-    "awards": ""
+    "awards": "",
+    "additionalAcademicStrength": ""
+  },
+  "removedContentJustification": {
+    "removedSections": [],
+    "removedPublications": [],
+    "removedProjects": [],
+    "removedExperience": [],
+    "removedEducation": []
   }
 }

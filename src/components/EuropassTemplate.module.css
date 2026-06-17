@@ -116,6 +116,8 @@
 .headerSection {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
   margin-bottom: 24px;
   position: relative;
   break-inside: avoid;
@@ -175,7 +177,6 @@
   font-size: 24px;
   font-weight: bold;
   color: #0e4e96; /* Europass Blue */
-  text-transform: uppercase;
   margin: 0 0 12px 0;
   line-height: 1.2;
 }
@@ -186,11 +187,18 @@
   font-size: 13px;
   margin-bottom: 8px;
   color: #444;
+  white-space: nowrap;
+}
+
+.locationRow {
+  white-space: normal;
+  align-items: flex-start;
 }
 
 .icon {
   color: #0e4e96;
   margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .contactRow a {
