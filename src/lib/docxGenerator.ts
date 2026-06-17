@@ -338,6 +338,9 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
     ],
   });
 
+  const clientName = (data.personalInfo.fullName || `${data.personalInfo.firstName || ""} ${data.personalInfo.lastName || ""}`).trim().replace(/\s+/g, "_") || "Client";
+  const filename = template === "ivy" ? `${clientName}_Academic V.2.docx` : `${clientName}_Academic_Cv.docx`;
+
   const blob = await Packer.toBlob(doc);
-  saveAs(blob, `${data.personalInfo.firstName}_${data.personalInfo.lastName}_Resume.docx`);
+  saveAs(blob, filename);
 };

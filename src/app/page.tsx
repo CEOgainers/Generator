@@ -20,9 +20,15 @@ export default function Home() {
   const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
   const [pastedJSON, setPastedJSON] = useState("");
 
+  const clientName = data?.personalInfo
+    ? (data.personalInfo.fullName || `${data.personalInfo.firstName || ""} ${data.personalInfo.lastName || ""}`).trim().replace(/\s+/g, "_")
+    : "Client";
+  const finalClientName = clientName || "Client";
+  const documentTitle = template === "ivy" ? `${finalClientName}_Academic V.2` : `${finalClientName}_Academic_Cv`;
+
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: data?.personalInfo ? `${data.personalInfo.firstName || "My"}_${data.personalInfo.lastName || "Resume"}` : "Resume",
+    documentTitle,
   });
 
   const handleWordExport = async () => {
