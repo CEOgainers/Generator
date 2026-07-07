@@ -38,7 +38,7 @@
 
 .header {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -47,16 +47,16 @@
   font-size: 28px;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   border-bottom: 2px solid #ccc;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .contactInfo {
   font-size: 14px;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   border-bottom: 2px solid #ccc;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .contactInfo a {
@@ -65,7 +65,7 @@
 }
 
 .section {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .sectionTitle {
@@ -74,14 +74,14 @@
   text-align: center;
   border-top: 1.5px solid #ccc;
   border-bottom: 1.5px solid #ccc;
-  padding: 6px 0;
-  margin: 0 0 12px 0;
+  padding: 4px 0;
+  margin: 0 0 8px 0;
   break-after: avoid;
   page-break-after: avoid;
 }
 
 .item {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -105,7 +105,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 15px;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
 }
 
 .bullets {
@@ -115,17 +115,17 @@
 }
 
 .bullet {
-  margin-bottom: 4px;
-  line-height: 1.4;
+  margin-bottom: 2px;
+  line-height: 1.15;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 .paragraph {
   font-size: 15px;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
   text-align: justify;
-  line-height: 1.5;
+  line-height: 1.2;
 }
 
 .publicationLink {
@@ -136,9 +136,10 @@
 
 .additionalText {
   font-size: 15px;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
 .bold {
   font-weight: bold;
 }
+
