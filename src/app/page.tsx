@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import styles from "./page.module.css";
@@ -23,7 +22,9 @@ import {
   Search, 
   LogOut, 
   ExternalLink, 
-  ArrowRight 
+  ArrowRight,
+  Copy,
+  Check
 } from "lucide-react";
 
 interface DashboardItem {
@@ -36,6 +37,7 @@ interface DashboardItem {
   iconName: string;
   iconBg: string;
   iconColor: string;
+  copyMessage: string;
 }
 
 const DASHBOARD_ITEMS: DashboardItem[] = [
@@ -48,7 +50,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: false,
     iconName: "FileEdit",
     iconBg: "rgba(16, 185, 129, 0.15)",
-    iconColor: "#10b981"
+    iconColor: "#10b981",
+    copyMessage: "Hello! Here is the link to our CV Creator tool. You can use it to build and download your academic & professional CV here: [BASE_URL]/cv-generator"
   },
   {
     id: "client_task_tracking",
@@ -59,7 +62,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "ClipboardList",
     iconBg: "rgba(59, 130, 246, 0.15)",
-    iconColor: "#3b82f6"
+    iconColor: "#3b82f6",
+    copyMessage: "Hello, here is the link to the Client Task Tracking Sheet to view tasks and work progress updates: https://docs.google.com/spreadsheets/d/1e1_Gl935otXzCQMdUwhvxJXfYARXXAlGWyOKl4dvnsg/edit?usp=sharing"
   },
   {
     id: "departmental_worksheet",
@@ -70,7 +74,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Layers",
     iconBg: "rgba(99, 102, 241, 0.15)",
-    iconColor: "#6366f1"
+    iconColor: "#6366f1",
+    copyMessage: "Hello, here is the link to the Departmental Work Sheet: https://docs.google.com/spreadsheets/d/1cSJge0e8j1go_KhT3PWZzT6rSOswkcnEI4ec4cafwmg/edit?usp=sharing"
   },
   {
     id: "central_calling_sheet",
@@ -81,7 +86,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "PhoneCall",
     iconBg: "rgba(236, 72, 153, 0.15)",
-    iconColor: "#ec4899"
+    iconColor: "#ec4899",
+    copyMessage: "Hello, please access the Central Calling Sheet for call logs and data here: https://docs.google.com/spreadsheets/d/1RHSxiIcG65XMeTQROurWc_CEa3bm-vI_wzoRaEXGbwI/edit?usp=sharing"
   },
   {
     id: "work_station",
@@ -92,7 +98,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Laptop",
     iconBg: "rgba(245, 158, 11, 0.15)",
-    iconColor: "#f59e0b"
+    iconColor: "#f59e0b",
+    copyMessage: "Hello, here is the official Work Station document containing research briefs and guidelines: https://docs.google.com/document/d/177zfifGGBRv_uJhb5oI0VKlfUAbKRvdl44PTNP0slIw/edit?usp=sharing"
   },
   {
     id: "leave_form",
@@ -103,7 +110,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "CalendarOff",
     iconBg: "rgba(239, 68, 68, 0.15)",
-    iconColor: "#ef4444"
+    iconColor: "#ef4444",
+    copyMessage: "Hello, you can submit your leave application (sick leave, full day, or half day) using this form: https://docs.google.com/forms/d/e/1FAIpQLSd9AgEj9gNaWK3_oAKt8XtkN-LH-xp1OpINKIbh7y8XfJ-AnQ/viewform"
   },
   {
     id: "client_appointment",
@@ -114,7 +122,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Calendar",
     iconBg: "rgba(139, 92, 246, 0.15)",
-    iconColor: "#8b5cf6"
+    iconColor: "#8b5cf6",
+    copyMessage: "Hello, please find the Client Appointment Sheet for checking and scheduling meetings here: https://docs.google.com/spreadsheets/d/1fBXZ8TkRyKlUnF635b_b-T3DCXeqNpJ9S8XJv7_zcEo/edit?usp=sharing"
   },
   {
     id: "attendance_declaration",
@@ -125,7 +134,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Clock",
     iconBg: "rgba(6, 182, 212, 0.15)",
-    iconColor: "#06b6d4"
+    iconColor: "#06b6d4",
+    copyMessage: "Hello, please use this form to declare your late attendance: https://forms.gle/hibLrxsAwtB9vNv37"
   },
   {
     id: "book_consultation",
@@ -136,7 +146,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "MessagesSquare",
     iconBg: "rgba(16, 185, 129, 0.15)",
-    iconColor: "#10b981"
+    iconColor: "#10b981",
+    copyMessage: "Dear Client, you can book an online or offline consultation meeting with our advisors using this link: https://gainersfuture.com/appointment.html. Let us know if you need any assistance."
   },
   {
     id: "google_meet",
@@ -147,7 +158,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Video",
     iconBg: "rgba(239, 68, 68, 0.15)",
-    iconColor: "#ef4444"
+    iconColor: "#ef4444",
+    copyMessage: "Hello, here is the Google Meet link for our upcoming advisor meeting: https://meet.google.com/nke-uurj-xxr. Please join the call when it is time. Thank you!"
   },
   {
     id: "client_mail",
@@ -158,7 +170,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "Mail",
     iconBg: "rgba(59, 130, 246, 0.15)",
-    iconColor: "#3b82f6"
+    iconColor: "#3b82f6",
+    copyMessage: "Hello, here is the link to log into the Hostinger client email inbox: https://mail.hostinger.com/mailboxes/INBOX"
   },
   {
     id: "call_script",
@@ -169,7 +182,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "ScrollText",
     iconBg: "rgba(245, 158, 11, 0.15)",
-    iconColor: "#f59e0b"
+    iconColor: "#f59e0b",
+    copyMessage: "Hello, please consult the official Call Script document for outreach and lead updates here: https://docs.google.com/document/d/1jbP3L9Saf_WwAF6_AUaLhlPsF5I71WOmHcjPSV_giGg/edit?tab=t.0#heading=h.3p15pulrd9rw"
   },
   {
     id: "sop_request",
@@ -180,7 +194,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "FilePlus",
     iconBg: "rgba(99, 102, 241, 0.15)",
-    iconColor: "#6366f1"
+    iconColor: "#6366f1",
+    copyMessage: "Hello, you can submit your Statement of Purpose (SOP) generation request using this link: https://forms.gle/GshVCL48Z2xD8KYg8"
   },
   {
     id: "cv_correction",
@@ -191,7 +206,8 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
     isExternal: true,
     iconName: "CheckCircle2",
     iconBg: "rgba(139, 92, 246, 0.15)",
-    iconColor: "#8b5cf6"
+    iconColor: "#8b5cf6",
+    copyMessage: "Hello! If you have any corrections or modifications for your CV, please submit them using this CV Correction form: https://forms.gle/7khNAQruDQ9PrJL88"
   }
 ];
 
@@ -200,6 +216,7 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [currentDate, setCurrentDate] = useState("");
+  const [copiedItemId, setCopiedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const today = new Date();
@@ -235,6 +252,31 @@ export default function Dashboard() {
       case "CheckCircle2": return <CheckCircle2 size={24} color={color} />;
       default: return <FileEdit size={24} color={color} />;
     }
+  };
+
+  const handleCardClick = (url: string, isExternal: boolean) => {
+    if (isExternal) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      router.push(url);
+    }
+  };
+
+  const handleCopyMessage = (e: React.MouseEvent, copyMsg: string, itemId: string) => {
+    e.stopPropagation(); // Avoid card click navigation triggering
+    
+    // Resolve dynamic base URL if needed
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const resolvedMessage = copyMsg.replace("[BASE_URL]", origin);
+
+    navigator.clipboard.writeText(resolvedMessage)
+      .then(() => {
+        setCopiedItemId(itemId);
+        setTimeout(() => setCopiedItemId(null), 2500);
+      })
+      .catch((err) => {
+        console.error("Failed to copy message:", err);
+      });
   };
 
   const filteredItems = DASHBOARD_ITEMS.filter((item) => {
@@ -295,51 +337,40 @@ export default function Dashboard() {
         {/* Cards Grid */}
         <section className={styles.grid}>
           {filteredItems.map((item) => {
-            const cardContent = (
-              <>
+            const isCopied = copiedItemId === item.id;
+            return (
+              <div 
+                key={item.id}
+                className={styles.card}
+                onClick={() => handleCardClick(item.url, item.isExternal)}
+              >
                 <div className={styles.cardIconWrapper} style={{ backgroundColor: item.iconBg }}>
                   {getIcon(item.iconName, item.iconColor)}
                 </div>
                 <h2 className={styles.cardTitle}>{item.title}</h2>
                 <p className={styles.cardDescription}>{item.description}</p>
                 <div className={styles.cardFooter}>
-                  <span className={`${styles.badge} ${item.isExternal ? styles.externalBadge : styles.localBadge}`}>
-                    {item.isExternal ? "External Link" : "Local Tool"}
-                  </span>
+                  <button 
+                    className={`${styles.copyMsgBtn} ${isCopied ? styles.copied : ""}`}
+                    onClick={(e) => handleCopyMessage(e, item.copyMessage, item.id)}
+                    title="Copy professional message with link"
+                  >
+                    {isCopied ? (
+                      <><Check size={13} /> Copied Msg</>
+                    ) : (
+                      <><Copy size={13} /> Copy Msg</>
+                    )}
+                  </button>
                   <span className={styles.actionText}>
                     {item.isExternal ? (
-                      <>Open Link <ExternalLink size={14} /></>
+                      <>Open <ExternalLink size={13} /></>
                     ) : (
-                      <>Open Tool <ArrowRight size={14} /></>
+                      <>Open <ArrowRight size={13} /></>
                     )}
                   </span>
                 </div>
-              </>
+              </div>
             );
-
-            if (item.isExternal) {
-              return (
-                <a 
-                  key={item.id} 
-                  href={item.url} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className={styles.card}
-                >
-                  {cardContent}
-                </a>
-              );
-            } else {
-              return (
-                <Link 
-                  key={item.id} 
-                  href={item.url} 
-                  className={styles.card}
-                >
-                  {cardContent}
-                </Link>
-              );
-            }
           })}
         </section>
 
