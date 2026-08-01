@@ -19,6 +19,7 @@ const EuropassTemplate = forwardRef<HTMLDivElement>((props, ref) => {
     certificationsTraining,
     activities,
     additional,
+    customSections,
   } = data;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -555,6 +556,46 @@ const EuropassTemplate = forwardRef<HTMLDivElement>((props, ref) => {
                     </div>
                   )}
                 </Section>
+              )}
+
+              {/* Dynamic Custom Sections */}
+              {customSections && customSections.length > 0 && (
+                <>
+                  {customSections.map((sec) => (
+                    <Section key={sec.id} title={sec.sectionTitle}>
+                      {sec.items && sec.items.length > 0 ? (
+                        sec.items.map((item) => (
+                          <div key={item.id} className={styles.item}>
+                            {item.title && <div className={styles.itemTitle}>{item.title}</div>}
+                            {(item.subtitle || item.date) && (
+                              <div className={styles.itemSubheader}>
+                                {item.subtitle && <span>{item.subtitle}</span>}
+                                {item.date && <span className={styles.itemDate}>[{item.date}]</span>}
+                              </div>
+                            )}
+                            {item.location && (
+                              <div className={styles.infoRow}>
+                                <span className={styles.bold}>Location:</span> {item.location}
+                              </div>
+                            )}
+                            {item.description && <div className={styles.infoRow}>{item.description}</div>}
+                            {item.bullets && item.bullets.length > 0 && (
+                              <ul className={styles.bullets}>
+                                {item.bullets.map((b, i) =>
+                                  b.trim() ? (
+                                    <li key={i} className={styles.bullet}>
+                                      {b}
+                                    </li>
+                                  ) : null
+                                )}
+                              </ul>
+                            )}
+                          </div>
+                        ))
+                      ) : null}
+                    </Section>
+                  ))}
+                </>
               )}
             </td>
           </tr>

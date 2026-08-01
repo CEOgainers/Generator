@@ -11,7 +11,7 @@ import {
 import { saveAs } from "file-saver";
 import { ResumeData } from "../app/context/ResumeContext";
 
-export const generateWordDoc = async (data: ResumeData, template: "ivy" | "modern" | "europass" = "ivy") => {
+export const generateWordDoc = async (data: ResumeData, template: "ivy" | "modern" | "europass" | "hybrid" = "hybrid") => {
   const sections = [];
 
   const displayName = data.personalInfo.fullName || `${data.personalInfo.firstName} ${data.personalInfo.lastName}`;
@@ -140,7 +140,19 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
 
   // Profile Summary / About Me
   if (data.personalInfo.aboutMe) {
+    addSectionHeader("Executive Profile");
     addParagraph(data.personalInfo.aboutMe);
+  }
+
+  // Research Interests & Focus Areas
+  if ((data.resumeStrategy?.researchFocus && data.resumeStrategy.researchFocus.length > 0) || data.resumeStrategy?.careerGoals) {
+    addSectionHeader("Research Interests & Focus Areas");
+    if (data.resumeStrategy.researchFocus && data.resumeStrategy.researchFocus.length > 0) {
+      addParagraph(data.resumeStrategy.researchFocus.join(" • "), "Primary Fields of Interest:");
+    }
+    if (data.resumeStrategy.careerGoals) {
+      addParagraph(data.resumeStrategy.careerGoals, "Academic & Research Trajectory:");
+    }
   }
 
   // Education
@@ -320,6 +332,32 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
     if (data.additional.additionalAcademicStrength) addParagraph(data.additional.additionalAcademicStrength, "Academic Strength:");
   }
 
+  // Dynamic Custom Sections
+  if (data.customSections && data.customSections.length > 0) {
+    data.customSections.forEach((customSec) => {
+      if (customSec.items && customSec.items.length > 0) {
+        addSectionHeader(customSec.sectionTitle || "Custom Section");
+        customSec.items.forEach((item) => {
+          if (item.title || item.date) {
+            addItemHeader(item.title || "", item.date || "");
+          }
+          if (item.subtitle || item.location) {
+            addItemSubheader(item.subtitle || "", item.location || "");
+          }
+          if (item.description) {
+            addParagraph(item.description);
+          }
+          if (item.bullets && item.bullets.length > 0) {
+            item.bullets.forEach((b) => {
+              if (b.trim()) addBullet(b);
+            });
+          }
+          sections.push(new Paragraph({ spacing: { after: 100 } }));
+        });
+      }
+    });
+  }
+
   const doc = new Document({
     sections: [
       {
@@ -339,7 +377,11 @@ export const generateWordDoc = async (data: ResumeData, template: "ivy" | "moder
   });
 
   const clientName = (data.personalInfo.fullName || `${data.personalInfo.firstName || ""} ${data.personalInfo.lastName || ""}`).trim().replace(/\s+/g, "_") || "Client";
-  const filename = template === "ivy" ? `${clientName}_Academic V.2.docx` : `${clientName}_Academic_Cv.docx`;
+  const filename = template === "ivy" 
+    ? `${clientName}_Academic V.2.docx` 
+    : template === "hybrid" 
+    ? `${clientName}_Hybrid_CV.docx` 
+    : `${clientName}_Academic_Cv.docx`;
 
   const blob = await Packer.toBlob(doc);
   saveAs(blob, filename);

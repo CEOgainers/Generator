@@ -6,6 +6,7 @@ import DataEntryForm from "../../components/DataEntryForm";
 import ResumeTemplate from "../../components/ResumeTemplate";
 import ModernTemplate from "../../components/ModernTemplate";
 import EuropassTemplate from "../../components/EuropassTemplate";
+import HybridTemplate from "../../components/HybridTemplate";
 import { useResume } from "../context/ResumeContext";
 import { generateWordDoc } from "../../lib/docxGenerator";
 import styles from "./page.module.css";
@@ -16,7 +17,7 @@ import Link from "next/link";
 export default function CVGeneratorPage() {
   const { data, loadData } = useResume();
   const componentRef = useRef<HTMLDivElement>(null);
-  const [template, setTemplate] = useState<"ivy" | "modern" | "europass">("modern");
+  const [template, setTemplate] = useState<"ivy" | "modern" | "europass" | "hybrid">("hybrid");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
   const [pastedJSON, setPastedJSON] = useState("");
@@ -25,7 +26,11 @@ export default function CVGeneratorPage() {
     ? (data.personalInfo.fullName || `${data.personalInfo.firstName || ""} ${data.personalInfo.lastName || ""}`).trim().replace(/\s+/g, "_")
     : "Client";
   const finalClientName = clientName || "Client";
-  const documentTitle = template === "ivy" ? `${finalClientName}_Academic V.2` : `${finalClientName}_Academic_Cv`;
+  const documentTitle = template === "ivy" 
+    ? `${finalClientName}_Academic V.2` 
+    : template === "hybrid" 
+    ? `${finalClientName}_Hybrid_CV` 
+    : `${finalClientName}_Academic_Cv`;
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
@@ -143,9 +148,10 @@ export default function CVGeneratorPage() {
             <select 
               className={styles.secondaryBtn} 
               value={template} 
-              onChange={(e) => setTemplate(e.target.value as "ivy" | "modern" | "europass")}
+              onChange={(e) => setTemplate(e.target.value as "ivy" | "modern" | "europass" | "hybrid")}
               style={{ padding: '8px', cursor: 'pointer' }}
             >
+              <option value="hybrid">Professional + Academic Hybrid</option>
               <option value="modern">Modern Academic</option>
               <option value="ivy">Ivy League</option>
               <option value="europass">Europass Style</option>
@@ -162,6 +168,7 @@ export default function CVGeneratorPage() {
           </button>
         </div>
         <div className={styles.resumeContainer}>
+          {template === "hybrid" && <HybridTemplate ref={componentRef} />}
           {template === "ivy" && <ResumeTemplate ref={componentRef} />}
           {template === "modern" && <ModernTemplate ref={componentRef} />}
           {template === "europass" && <EuropassTemplate ref={componentRef} />}

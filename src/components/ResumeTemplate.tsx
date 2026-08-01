@@ -18,6 +18,7 @@ const ResumeTemplate = forwardRef<HTMLDivElement>((props, ref) => {
     certificationsTraining,
     activities,
     additional,
+    customSections,
   } = data;
 
   const displayName = personalInfo.fullName || `${personalInfo.firstName} ${personalInfo.lastName}`;
@@ -400,6 +401,49 @@ const ResumeTemplate = forwardRef<HTMLDivElement>((props, ref) => {
                     </p>
                   )}
                 </div>
+              )}
+
+              {/* Dynamic Custom Sections */}
+              {customSections && customSections.length > 0 && (
+                <>
+                  {customSections.map((sec) => (
+                    <div key={sec.id} className={styles.section}>
+                      <h2 className={styles.sectionTitle}>{sec.sectionTitle}</h2>
+                      {sec.items && sec.items.length > 0 ? (
+                        sec.items.map((item) => (
+                          <div key={item.id} className={styles.item}>
+                            {(item.title || item.date) && (
+                              <div className={styles.itemHeader}>
+                                {item.title && <span className={styles.itemTitle}>{item.title}</span>}
+                                {item.date && <span className={styles.itemDate}>{item.date}</span>}
+                              </div>
+                            )}
+                            {(item.subtitle || item.location) && (
+                              <div className={styles.itemSubheader}>
+                                {item.subtitle && <span>{item.subtitle}</span>}
+                                {item.location && <span>{item.location}</span>}
+                              </div>
+                            )}
+                            {item.description && (
+                              <p className={styles.paragraph}>{item.description}</p>
+                            )}
+                            {item.bullets && item.bullets.length > 0 && (
+                              <ul className={styles.bullets}>
+                                {item.bullets.map((b, idx) =>
+                                  b.trim() ? (
+                                    <li key={idx} className={styles.bullet}>
+                                      {b}
+                                    </li>
+                                  ) : null
+                                )}
+                              </ul>
+                            )}
+                          </div>
+                        ))
+                      ) : null}
+                    </div>
+                  ))}
+                </>
               )}
             </td>
           </tr>

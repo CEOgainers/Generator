@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface ResumeStrategy {
   targetCountries: string[];
@@ -141,6 +141,22 @@ export interface RemovedContentJustification {
   overallFilteringSummary: string;
 }
 
+export interface CustomSectionItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  location?: string;
+  date?: string;
+  description?: string;
+  bullets?: string[];
+}
+
+export interface CustomSection {
+  id: string;
+  sectionTitle: string;
+  items: CustomSectionItem[];
+}
+
 export interface ResumeData {
   resumeStrategy: ResumeStrategy;
   personalInfo: PersonalInfo;
@@ -155,6 +171,10 @@ export interface ResumeData {
   activities: Activity[];
   additional: Additional;
   removedContentJustification: RemovedContentJustification;
+  customSections?: CustomSection[];
+  hiddenSections?: string[];
+  themeColor?: "navy" | "slate" | "emerald" | "burgundy" | "classic";
+  fontFamily?: "calibri" | "arial" | "times" | "georgia";
 }
 
 const initialData: ResumeData = {
@@ -313,7 +333,11 @@ const initialData: ResumeData = {
     removedExperience: [],
     removedEducation: [],
     overallFilteringSummary: ""
-  }
+  },
+  customSections: [],
+  hiddenSections: [],
+  themeColor: "navy",
+  fontFamily: "calibri"
 };
 
 interface ResumeContextType {
@@ -322,13 +346,51 @@ interface ResumeContextType {
   updateSectionItem: (section: keyof ResumeData, id: string, field: string, value: any) => void;
   addSectionItem: (section: keyof ResumeData, item: any) => void;
   removeSectionItem: (section: keyof ResumeData, id: string) => void;
+  addCustomSection: (title: string) => void;
+  removeCustomSection: (sectionId: string) => void;
+  updateCustomSectionTitle: (sectionId: string, title: string) => void;
+  addCustomSectionItem: (sectionId: string, item: CustomSectionItem) => void;
+  updateCustomSectionItem: (sectionId: string, itemId: string, field: keyof CustomSectionItem, value: any) => void;
+  removeCustomSectionItem: (sectionId: string, itemId: string) => void;
+  moveCustomSection: (sectionId: string, direction: "up" | "down") => void;
+  toggleSectionVisibility: (sectionKey: string) => void;
   loadData: (newData: ResumeData) => void;
+  clearDraft: () => void;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
 export const ResumeProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<ResumeData>(initialData);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Hydrate from localStorage on initial load
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("cv_generator_draft");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === "object") {
+          setData((prev) => ({ ...prev, ...parsed }));
+        }
+      }
+    } catch (e) {
+      console.error("Failed to load draft from localStorage", e);
+    } finally {
+      setIsHydrated(true);
+    }
+  }, []);
+
+  // Save to localStorage on data change
+  useEffect(() => {
+    if (isHydrated) {
+      try {
+        localStorage.setItem("cv_generator_draft", JSON.stringify(data));
+      } catch (e) {
+        console.error("Failed to save draft to localStorage", e);
+      }
+    }
+  }, [data, isHydrated]);
 
   const updateData = (section: keyof ResumeData, value: any) => {
     setData((prev) => ({ ...prev, [section]: value }));
@@ -336,7 +398,7 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
 
   const updateSectionItem = (section: keyof ResumeData, id: string, field: string, value: any) => {
     setData((prev) => {
-      const list = prev[section] as any[];
+      const list = (prev[section] || []) as any[];
       return {
         ...prev,
         [section]: list.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
@@ -346,20 +408,117 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
 
   const addSectionItem = (section: keyof ResumeData, item: any) => {
     setData((prev) => {
-      const list = prev[section] as any[];
+      const list = (prev[section] || []) as any[];
       return { ...prev, [section]: [...list, item] };
     });
   };
 
   const removeSectionItem = (section: keyof ResumeData, id: string) => {
     setData((prev) => {
-      const list = prev[section] as any[];
+      const list = (prev[section] || []) as any[];
       return { ...prev, [section]: list.filter((item) => item.id !== id) };
     });
   };
 
+  const addCustomSection = (sectionTitle: string) => {
+    const newSection: CustomSection = {
+      id: `custom_${Date.now()}`,
+      sectionTitle: sectionTitle || "Custom Section",
+      items: [],
+    };
+    setData((prev) => ({
+      ...prev,
+      customSections: [...(prev.customSections || []), newSection],
+    }));
+  };
+
+  const removeCustomSection = (sectionId: string) => {
+    setData((prev) => ({
+      ...prev,
+      customSections: (prev.customSections || []).filter((s) => s.id !== sectionId),
+    }));
+  };
+
+  const updateCustomSectionTitle = (sectionId: string, sectionTitle: string) => {
+    setData((prev) => ({
+      ...prev,
+      customSections: (prev.customSections || []).map((s) =>
+        s.id === sectionId ? { ...s, sectionTitle } : s
+      ),
+    }));
+  };
+
+  const addCustomSectionItem = (sectionId: string, item: CustomSectionItem) => {
+    setData((prev) => ({
+      ...prev,
+      customSections: (prev.customSections || []).map((s) =>
+        s.id === sectionId ? { ...s, items: [...s.items, item] } : s
+      ),
+    }));
+  };
+
+  const updateCustomSectionItem = (sectionId: string, itemId: string, field: keyof CustomSectionItem, value: any) => {
+    setData((prev) => ({
+      ...prev,
+      customSections: (prev.customSections || []).map((s) => {
+        if (s.id !== sectionId) return s;
+        return {
+          ...s,
+          items: s.items.map((it) => (it.id === itemId ? { ...it, [field]: value } : it)),
+        };
+      }),
+    }));
+  };
+
+  const removeCustomSectionItem = (sectionId: string, itemId: string) => {
+    setData((prev) => ({
+      ...prev,
+      customSections: (prev.customSections || []).map((s) => {
+        if (s.id !== sectionId) return s;
+        return {
+          ...s,
+          items: s.items.filter((it) => it.id !== itemId),
+        };
+      }),
+    }));
+  };
+
+  const moveCustomSection = (sectionId: string, direction: "up" | "down") => {
+    setData((prev) => {
+      const list = [...(prev.customSections || [])];
+      const idx = list.findIndex((s) => s.id === sectionId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= list.length) return prev;
+      const temp = list[idx];
+      list[idx] = list[targetIdx];
+      list[targetIdx] = temp;
+      return { ...prev, customSections: list };
+    });
+  };
+
+  const toggleSectionVisibility = (sectionKey: string) => {
+    setData((prev) => {
+      const hidden = new Set(prev.hiddenSections || []);
+      if (hidden.has(sectionKey)) {
+        hidden.delete(sectionKey);
+      } else {
+        hidden.add(sectionKey);
+      }
+      return { ...prev, hiddenSections: Array.from(hidden) };
+    });
+  };
+
+  const clearDraft = () => {
+    try {
+      localStorage.removeItem("cv_generator_draft");
+    } catch (e) {
+      console.error("Failed to clear draft", e);
+    }
+    setData(initialData);
+  };
+
   const loadData = (newData: any) => {
-    // Merge with initial data to ensure all keys exist even if JSON is partial or old
     const mergedData: ResumeData = {
       resumeStrategy: { ...initialData.resumeStrategy, ...(newData?.resumeStrategy || {}) },
       personalInfo: { ...initialData.personalInfo, ...(newData?.personalInfo || {}) },
@@ -373,13 +532,35 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
       certificationsTraining: newData?.certificationsTraining || [],
       activities: newData?.activities || [],
       additional: { ...initialData.additional, ...(newData?.additional || {}) },
-      removedContentJustification: { ...initialData.removedContentJustification, ...(newData?.removedContentJustification || {}) }
+      removedContentJustification: { ...initialData.removedContentJustification, ...(newData?.removedContentJustification || {}) },
+      customSections: newData?.customSections || [],
+      hiddenSections: newData?.hiddenSections || [],
+      themeColor: newData?.themeColor || "navy",
+      fontFamily: newData?.fontFamily || "calibri",
     };
     setData(mergedData);
   };
 
   return (
-    <ResumeContext.Provider value={{ data, updateData, updateSectionItem, addSectionItem, removeSectionItem, loadData }}>
+    <ResumeContext.Provider
+      value={{
+        data,
+        updateData,
+        updateSectionItem,
+        addSectionItem,
+        removeSectionItem,
+        addCustomSection,
+        removeCustomSection,
+        updateCustomSectionTitle,
+        addCustomSectionItem,
+        updateCustomSectionItem,
+        removeCustomSectionItem,
+        moveCustomSection,
+        toggleSectionVisibility,
+        loadData,
+        clearDraft,
+      }}
+    >
       {children}
     </ResumeContext.Provider>
   );

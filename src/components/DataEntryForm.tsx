@@ -3,11 +3,27 @@
 import React, { useState } from "react";
 import { useResume } from "../app/context/ResumeContext";
 import styles from "./DataEntryForm.module.css";
-import { Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown, Eye, EyeOff, RotateCcw } from "lucide-react";
 
 export default function DataEntryForm() {
-  const { data, updateData, updateSectionItem, addSectionItem, removeSectionItem } = useResume();
+  const {
+    data,
+    updateData,
+    updateSectionItem,
+    addSectionItem,
+    removeSectionItem,
+    addCustomSection,
+    removeCustomSection,
+    updateCustomSectionTitle,
+    addCustomSectionItem,
+    updateCustomSectionItem,
+    removeCustomSectionItem,
+    moveCustomSection,
+    toggleSectionVisibility,
+    clearDraft,
+  } = useResume();
   const [openSection, setOpenSection] = useState<string>("personalInfo");
+  const [newCustomTitle, setNewCustomTitle] = useState("");
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? "" : section);
@@ -22,7 +38,114 @@ export default function DataEntryForm() {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.mainTitle}>Resume Data Entry</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <h2 className={styles.mainTitle} style={{ margin: 0 }}>Resume Data Entry</h2>
+        <button
+          className={styles.deleteBtn}
+          style={{ fontSize: "12px", border: "1px solid var(--border-color)", padding: "6px 10px", borderRadius: "6px" }}
+          onClick={() => {
+            if (confirm("Are you sure you want to reset all form data to initial template defaults?")) {
+              clearDraft();
+            }
+          }}
+        >
+          <RotateCcw size={14} style={{ marginRight: "4px" }} /> Reset Form
+        </button>
+      </div>
+
+      {/* Formatting & Design Controls Box */}
+      <div style={{ background: "var(--bg-secondary)", padding: "14px", borderRadius: "8px", border: "1px solid var(--border-color)", display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <div className={styles.formGroup}>
+            <label style={{ fontWeight: "600", fontSize: "13px" }}>Theme Accent Color</label>
+            <select
+              className={styles.inputField}
+              value={data.themeColor || "navy"}
+              onChange={(e) => updateData("themeColor", e.target.value)}
+            >
+              <option value="navy">Navy Blue (Executive / Academic)</option>
+              <option value="slate">Slate Gray (Modern / Minimalist)</option>
+              <option value="emerald">Emerald Green (Professional R&D)</option>
+              <option value="burgundy">Burgundy Maroon (Classic Honor)</option>
+              <option value="classic">Classic Monochrome (Black & White)</option>
+            </select>
+          </div>
+          <div className={styles.formGroup}>
+            <label style={{ fontWeight: "600", fontSize: "13px" }}>Typography Font Family</label>
+            <select
+              className={styles.inputField}
+              value={data.fontFamily || "calibri"}
+              onChange={(e) => updateData("fontFamily", e.target.value)}
+            >
+              <option value="calibri">Calibri (Clean & Modern)</option>
+              <option value="arial">Arial (Standard Sans-Serif)</option>
+              <option value="times">Times New Roman (Academic Traditional)</option>
+              <option value="georgia">Georgia (Editorial Serif)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Text Formatting Guide Tip */}
+        <div style={{ fontSize: "12px", color: "var(--text-secondary)", background: "rgba(59, 130, 246, 0.08)", padding: "8px 12px", borderRadius: "6px", borderLeft: "3px solid var(--accent-color)" }}>
+          💡 <strong>Text Formatting Tip:</strong> You can format any text field (bullets, descriptions, summary)!
+          Use <code>*text*</code> or <code>_text_</code> to make text <em>italic</em>, and <code>**text**</code> to make text <strong>bold</strong>.
+        </div>
+      </div>
+
+      {/* Section Visibility Manager */}
+      <div className={styles.section}>
+        <SectionHeader title="Section Visibility & Display Controls" sectionName="sectionVisibility" />
+        {openSection === "sectionVisibility" && (
+          <div className={styles.sectionContent}>
+            <p style={{ fontSize: "13px", color: "var(--text-secondary)", margin: "0 0 8px 0" }}>
+              Toggle visibility of individual resume sections on the template:
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              {[
+                { key: "aboutMe", label: "Executive Profile" },
+                { key: "researchFocus", label: "Research Interests & Focus" },
+                { key: "skills", label: "Core Competencies & Skills" },
+                { key: "experience", label: "Professional Experience" },
+                { key: "education", label: "Education & Credentials" },
+                { key: "researchExperience", label: "Research Experience" },
+                { key: "selectedPublications", label: "Publications & Scholarly Works" },
+                { key: "selectedProjects", label: "Key R&D Projects" },
+                { key: "honorsAwardsScholarships", label: "Honors & Awards" },
+                { key: "standardizedTests", label: "Standardized Tests" },
+                { key: "certificationsTraining", label: "Certifications & Training" },
+                { key: "activities", label: "Leadership & Extracurriculars" },
+                { key: "customSections", label: "Custom Dynamic Sections" },
+              ].map((item) => {
+                const isHidden = (data.hiddenSections || []).includes(item.key);
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => toggleSectionVisibility(item.key)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid var(--border-color)",
+                      backgroundColor: isHidden ? "rgba(239, 68, 68, 0.1)" : "rgba(34, 197, 94, 0.1)",
+                      color: isHidden ? "#ef4444" : "#16a34a",
+                      fontWeight: "500",
+                      fontSize: "13px",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span>{item.label}</span>
+                    {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Resume Strategy */}
       <div className={styles.section}>
@@ -1043,6 +1166,198 @@ export default function DataEntryForm() {
             <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
               These justifications are for audit purposes and will not render directly on the academic CV template.
             </p>
+          </div>
+        )}
+      </div>
+
+      {/* Dynamic Custom Sections Manager */}
+      <div className={styles.section}>
+        <SectionHeader title="Custom & Dynamic Sections (Certifications, Volunteer, etc.)" sectionName="customSections" />
+        {openSection === "customSections" && (
+          <div className={styles.sectionContent}>
+            {/* Quick Presets */}
+            <div style={{ marginBottom: "10px" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: "600", display: "block", marginBottom: "6px" }}>
+                Quick Presets:
+              </span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {["Certifications & Training", "Patents & Intellectual Property", "Volunteer Work & Community", "Teaching Experience", "Grants & Research Funding"].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    style={{
+                      fontSize: "12px",
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      border: "1px solid var(--border-color)",
+                      backgroundColor: "var(--bg-secondary)",
+                      color: "var(--text-primary)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => addCustomSection(preset)}
+                  >
+                    + {preset}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "12px" }}>
+              <input
+                className={styles.inputField}
+                placeholder="Or enter custom section name..."
+                value={newCustomTitle}
+                onChange={(e) => setNewCustomTitle(e.target.value)}
+              />
+              <button
+                className={styles.addBtn}
+                style={{ whiteSpace: "nowrap" }}
+                onClick={() => {
+                  if (newCustomTitle.trim()) {
+                    addCustomSection(newCustomTitle.trim());
+                    setNewCustomTitle("");
+                  }
+                }}
+              >
+                <Plus size={16} /> Add Section
+              </button>
+            </div>
+
+            {data.customSections && data.customSections.length > 0 ? (
+              data.customSections.map((sec, index) => (
+                <div key={sec.id} className={styles.itemCard} style={{ borderLeft: "4px solid var(--accent-color)" }}>
+                  <div className={styles.cardHeader}>
+                    <div style={{ display: "flex", gap: "4px", alignItems: "center", width: "70%" }}>
+                      <input
+                        className={styles.inputField}
+                        style={{ fontWeight: "bold", fontSize: "15px", flex: 1 }}
+                        value={sec.sectionTitle}
+                        onChange={(e) => updateCustomSectionTitle(sec.id, e.target.value)}
+                        placeholder="Section Title"
+                      />
+                      <button
+                        type="button"
+                        className={styles.deleteBtn}
+                        style={{ color: "var(--text-secondary)" }}
+                        title="Move Up"
+                        onClick={() => moveCustomSection(sec.id, "up")}
+                        disabled={index === 0}
+                      >
+                        <ArrowUp size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.deleteBtn}
+                        style={{ color: "var(--text-secondary)" }}
+                        title="Move Down"
+                        onClick={() => moveCustomSection(sec.id, "down")}
+                        disabled={index === (data.customSections?.length || 0) - 1}
+                      >
+                        <ArrowDown size={16} />
+                      </button>
+                    </div>
+                    <button className={styles.deleteBtn} onClick={() => removeCustomSection(sec.id)}>
+                      <Trash2 size={16} /> Remove
+                    </button>
+                  </div>
+
+                  {/* Items in this custom section */}
+                  {sec.items && sec.items.length > 0 && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "8px" }}>
+                      {sec.items.map((item) => (
+                        <div key={item.id} style={{ padding: "12px", border: "1px solid var(--border-color)", borderRadius: "6px", backgroundColor: "var(--bg-secondary)" }}>
+                          <div className={styles.cardHeader} style={{ marginBottom: "8px" }}>
+                            <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--text-secondary)" }}>Section Item</span>
+                            <button className={styles.deleteBtn} onClick={() => removeCustomSectionItem(sec.id, item.id)}>
+                              <Trash2 size={14} /> Item
+                            </button>
+                          </div>
+                          <div className={styles.formGroup}>
+                            <label>Item Title / Role</label>
+                            <input
+                              className={styles.inputField}
+                              value={item.title || ""}
+                              onChange={(e) => updateCustomSectionItem(sec.id, item.id, "title", e.target.value)}
+                              placeholder="e.g. AWS Certified Solutions Architect"
+                            />
+                          </div>
+                          <div className={styles.formGroup}>
+                            <label>Subtitle / Organization / Issuer</label>
+                            <input
+                              className={styles.inputField}
+                              value={item.subtitle || ""}
+                              onChange={(e) => updateCustomSectionItem(sec.id, item.id, "subtitle", e.target.value)}
+                              placeholder="e.g. Amazon Web Services"
+                            />
+                          </div>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                            <div className={styles.formGroup}>
+                              <label>Location</label>
+                              <input
+                                className={styles.inputField}
+                                value={item.location || ""}
+                                onChange={(e) => updateCustomSectionItem(sec.id, item.id, "location", e.target.value)}
+                                placeholder="e.g. Online / USA"
+                              />
+                            </div>
+                            <div className={styles.formGroup}>
+                              <label>Date / Period</label>
+                              <input
+                                className={styles.inputField}
+                                value={item.date || ""}
+                                onChange={(e) => updateCustomSectionItem(sec.id, item.id, "date", e.target.value)}
+                                placeholder="e.g. Nov 2023 - Present"
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.formGroup}>
+                            <label>Description (Optional text paragraph)</label>
+                            <textarea
+                              className={styles.inputField}
+                              rows={2}
+                              value={item.description || ""}
+                              onChange={(e) => updateCustomSectionItem(sec.id, item.id, "description", e.target.value)}
+                              placeholder="Optional summary or description"
+                            />
+                          </div>
+                          <div className={styles.formGroup}>
+                            <label>Bullet Points (One per line)</label>
+                            <textarea
+                              className={styles.inputField}
+                              rows={3}
+                              value={(item.bullets || []).join("\n")}
+                              onChange={(e) => updateCustomSectionItem(sec.id, item.id, "bullets", e.target.value.split("\n"))}
+                              placeholder="Achieved top percentile rank&#10;Managed regional outreach campaign"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <button
+                    className={styles.addBtn}
+                    onClick={() =>
+                      addCustomSectionItem(sec.id, {
+                        id: `item_${Date.now()}`,
+                        title: "",
+                        subtitle: "",
+                        location: "",
+                        date: "",
+                        description: "",
+                        bullets: [],
+                      })
+                    }
+                  >
+                    <Plus size={16} /> Add Item to "{sec.sectionTitle}"
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p style={{ fontSize: "13px", color: "var(--text-secondary)", fontStyle: "italic", margin: 0 }}>
+                No custom sections added yet. Click a Quick Preset above or type a custom section name.
+              </p>
+            )}
           </div>
         )}
       </div>

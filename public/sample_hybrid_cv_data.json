@@ -1,0 +1,255 @@
+{
+  "resumeStrategy": {
+    "targetCountries": ["USA", "Germany", "Canada"],
+    "targetPrograms": ["Ph.D. in Computer Science & AI", "Industrial R&D Fellowship"],
+    "researchFocus": [
+      "Machine Learning & Deep Learning",
+      "Computer Vision & Autonomous Systems",
+      "Edge AI & Resource-Constrained Computing"
+    ],
+    "careerGoals": "To advance foundational research in energy-efficient AI systems while bridging state-of-the-art laboratory innovations with high-impact industrial applications.",
+    "resumeType": "Professional & Academic Hybrid Resume",
+    "pageTarget": "2 pages",
+    "maximumPageLimit": "2 pages"
+  },
+  "personalInfo": {
+    "firstName": "Alex",
+    "lastName": "Morgan",
+    "fullName": "Alex Morgan",
+    "email": "alex.morgan@stanford.edu",
+    "phone": "+1 (650) 723-2300",
+    "location": "Palo Alto, California, USA",
+    "linkedin": "linkedin.com/in/alex-morgan-ai",
+    "portfolio": "alexmorgan-ai.github.io",
+    "orcid": "0000-0002-1825-0097",
+    "googleScholar": "scholar.google.com/citations?user=alexmorgan",
+    "researchGate": "researchgate.net/profile/Alex-Morgan",
+    "nationality": "American",
+    "profilePicture": "",
+    "aboutMe": "Accomplished Senior AI Research Engineer with 6+ years of combined experience in machine learning research, embedded system design, and scalable software engineering. Proven track record of publishing in top-tier peer-reviewed IEEE/ACM venues alongside driving production-grade software deployment serving over 1M+ active users.",
+    "personalId": "",
+    "dateOfBirth": "",
+    "placeOfBirth": ""
+  },
+  "education": [
+    {
+      "id": "edu_1",
+      "institution": "Stanford University",
+      "location": "Stanford, CA, USA",
+      "degree": "Master of Science",
+      "major": "Computer Science (Artificial Intelligence)",
+      "date": "Sep 2021 - May 2023",
+      "gpa": "3.95 / 4.00",
+      "ranking": "Top 3%",
+      "thesis": "Quantized Neural Network Architectures for Micro-Edge Devices",
+      "advisor": "Prof. Andrew Ng",
+      "coursework": "Deep Learning, Computer Vision, Distributed Systems, Advanced Algorithms"
+    },
+    {
+      "id": "edu_2",
+      "institution": "University of California, Berkeley",
+      "location": "Berkeley, CA, USA",
+      "degree": "Bachelor of Science",
+      "major": "Electrical Engineering & Computer Sciences (EECS)",
+      "date": "Aug 2017 - May 2021",
+      "gpa": "3.91 / 4.00",
+      "ranking": "Department High Honors",
+      "thesis": "Real-time Autonomous Quadcopter Navigation",
+      "advisor": "Prof. Claire Tomlin",
+      "coursework": "Operating Systems, Signals & Systems, Linear Algebra, Machine Learning"
+    }
+  ],
+  "researchExperience": [
+    {
+      "id": "rex_1",
+      "institution": "Stanford Artificial Intelligence Laboratory (SAIL)",
+      "location": "Stanford, CA, USA",
+      "role": "Graduate Research Assistant",
+      "date": "Sep 2021 - May 2023",
+      "supervisor": "Prof. Andrew Ng",
+      "bullets": [
+        "Formulated a novel model compression technique reducing inference latency by 42% on ARM Cortex-M processors with less than 0.5% accuracy trade-off.",
+        "Co-authored 2 peer-reviewed papers published in IEEE TPAMI and CVPR 2023.",
+        "Mentored 4 undergraduate researchers in experimental validation and PyTorch benchmarking pipelines."
+      ]
+    },
+    {
+      "id": "rex_2",
+      "institution": "Meta AI Research (FAIR)",
+      "location": "Menlo Park, CA, USA",
+      "role": "AI Research Scientist Intern",
+      "date": "Jun 2022 - Sep 2022",
+      "supervisor": "Dr. Yann LeCun",
+      "bullets": [
+        "Investigated self-supervised representation learning for video understanding models.",
+        "Implemented distributed GPU training scripts in PyTorch FSDP across 128 NVIDIA A100 GPUs, speeding up training throughput by 2.4x."
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "id": "exp_1",
+      "company": "NVIDIA Corporation",
+      "location": "Santa Clara, CA, USA",
+      "title": "Senior AI Infrastructure Engineer",
+      "date": "Jun 2023 - Present",
+      "bullets": [
+        "Architected enterprise TensorRT optimization pipelines deployed across cloud microservices, serving 1M+ daily active requests.",
+        "Led cross-functional engineering sprint optimizing Transformer kernel execution, reducing GPU memory overhead by 28%.",
+        "Collaborated directly with hardware design teams to specify next-generation NPU instructions."
+      ]
+    },
+    {
+      "id": "exp_2",
+      "company": "Google Research",
+      "location": "Mountain View, CA, USA",
+      "title": "Software Engineering Intern (TensorFlow Team)",
+      "date": "May 2020 - Aug 2020",
+      "bullets": [
+        "Developed custom C++ operators for TensorFlow Lite targeting Android Neural Networks API (NNAPI).",
+        "Refactored memory allocation routines, resulting in a 15% reduction in peak RAM footprint."
+      ]
+    }
+  ],
+  "selectedPublications": [
+    {
+      "id": "pub_1",
+      "title": "Ultra-Low Precision Model Quantization for Autonomous Micro-Robotics",
+      "authors": "Alex Morgan, Jane Doe, Andrew Ng",
+      "journal": "IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)",
+      "publisher": "IEEE",
+      "quartile": "Q1",
+      "date": "2023",
+      "doi": "10.1109/TPAMI.2023.32145",
+      "link": "https://doi.org/10.1109/TPAMI.2023.32145",
+      "status": "Published"
+    },
+    {
+      "id": "pub_2",
+      "title": "Self-Supervised Video Representation Learning via Spatial-Temporal Masking",
+      "authors": "Alex Morgan, Yann LeCun",
+      "journal": "IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)",
+      "publisher": "IEEE",
+      "quartile": "Q1",
+      "date": "2023",
+      "doi": "10.1109/CVPR.2023.98765",
+      "link": "https://doi.org/10.1109/CVPR.2023.98765",
+      "status": "Published"
+    }
+  ],
+  "selectedProjects": [
+    {
+      "id": "proj_1",
+      "name": "EdgeVision: Open-Source Real-Time Object Detection Engine",
+      "date": "2022 - 2023",
+      "fundingOrGrant": "National Science Foundation (NSF Grant #204123)",
+      "supervisor": "Prof. Andrew Ng",
+      "bullets": [
+        "Built a lightweight C++/CUDA object detection pipeline executing 60 FPS on Jetson Orin Nano.",
+        "Gained 1,800+ GitHub stars and adopted by 12 academic robotics labs worldwide."
+      ]
+    }
+  ],
+  "honorsAwardsScholarships": [
+    {
+      "id": "award_1",
+      "title": "NSF Graduate Research Fellowship (GRFP)",
+      "organization": "National Science Foundation",
+      "date": "2021",
+      "description": "Prestigious 3-year fellowship awarded for outstanding scientific potential in engineering."
+    },
+    {
+      "id": "award_2",
+      "title": "UC Berkeley EECS Departmental Honors",
+      "organization": "UC Berkeley",
+      "date": "2021",
+      "description": "Awarded for graduating in the top 5% of the engineering class."
+    }
+  ],
+  "standardizedTests": [
+    {
+      "id": "test_1",
+      "testName": "GRE General Test",
+      "score": "335 / 340",
+      "date": "2021",
+      "breakdown": "Quantitative: 170/170 (100th percentile), Verbal: 165/170, Analytical Writing: 5.0/6.0"
+    }
+  ],
+  "certificationsTraining": [
+    {
+      "id": "cert_1",
+      "title": "AWS Certified Solutions Architect – Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "date": "2023",
+      "description": "Validates expertise in designing resilient, high-performance, and cost-optimized cloud architectures."
+    }
+  ],
+  "activities": [
+    {
+      "id": "act_1",
+      "role": "Peer Reviewer & Program Committee Member",
+      "organization": "NeurIPS, ICML, CVPR, IEEE TPAMI",
+      "date": "2022 - Present",
+      "location": "International",
+      "bullets": [
+        "Reviewed 25+ manuscripts in computer vision, model optimization, and deep learning architectures."
+      ]
+    }
+  ],
+  "additional": {
+    "technicalSkills": "Model Quantization, TensorRT, CUDA Programming, Embedded AI, Distributed Training",
+    "programmingSkills": "Python, C++, PyTorch, CUDA, C, POSIX Threads, SQL, Linux Shell",
+    "laboratorySkills": "Jetson Orin/Nano, FPGA (Xilinx Zynq), Oscilloscopes, Logic Analyzers",
+    "languages": "English (Native), German (Professional Working)",
+    "professionalMemberships": "IEEE Senior Member, ACM Member",
+    "peerReviewActivities": "Reviewer for IEEE TPAMI, CVPR, NeurIPS",
+    "certifications": "",
+    "awards": "",
+    "additionalAcademicStrength": "Strong mathematical foundation in linear algebra, stochastic optimization, and matrix calculus."
+  },
+  "removedContentJustification": {
+    "removedSections": [],
+    "removedPublications": [],
+    "removedProjects": [],
+    "removedExperience": [],
+    "removedEducation": [],
+    "overallFilteringSummary": "Curated for dual industry R&D and academic fellowship applications."
+  },
+  "customSections": [
+    {
+      "id": "custom_patents",
+      "sectionTitle": "Patents & Intellectual Property",
+      "items": [
+        {
+          "id": "patent_1",
+          "title": "Method and Apparatus for Low-Latency Neural Network Model Quantization on Edge Hardware",
+          "subtitle": "US Patent #11,842,109 B2",
+          "location": "Palo Alto, CA",
+          "date": "Issued Dec 2023",
+          "description": "Granted patent covering novel hardware-software co-design for deep learning accelerators.",
+          "bullets": [
+            "Inventors: Alex Morgan, Jane Doe.",
+            "Assigned to Stanford University / NVIDIA Corp."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "custom_volunteering",
+      "sectionTitle": "Community Leadership & Mentorship",
+      "items": [
+        {
+          "id": "item_vol_1",
+          "title": "Lead Workshop Coordinator",
+          "subtitle": "AI for All High School Outreach Program",
+          "location": "Stanford, CA",
+          "date": "2021 - 2023",
+          "description": "Designed and taught hands-on Python and Machine Learning curriculum to 120+ underrepresented high school students.",
+          "bullets": [
+            "Organized annual summer hackathon securing $15,000 in corporate sponsorships."
+          ]
+        }
+      ]
+    }
+  ]
+}
